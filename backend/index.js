@@ -14,6 +14,7 @@ import connectMongo from 'connect-mongodb-session';
 import { buildContext } from 'graphql-passport';
 import { configurePassport } from './passport/passport.config.js';
 import path from 'path';
+import { ApolloServerPluginLandingPageDisabled } from '@apollo/server/plugin/disabled';
 
 dotenv.config();
 configurePassport();
