@@ -33,6 +33,8 @@ const __dirname = path.resolve()
 
 store.on('error',(error) => console.log(error));
 
+app.use(express.json()); 
+
 app.use(
   session({
     secret : process.env.SESSION_SECRET,

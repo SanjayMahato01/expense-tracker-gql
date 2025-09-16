@@ -19,7 +19,7 @@ const Cards = () => {
 			<p className='text-5xl text-white font-bold text-center my-10'>History</p>
 			<div className='w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 justify-start mb-20'>
 				{!loading && data.transactions.map(transaction => (
-					<Card key={transaction._id} transaction={transaction} authUser={authUser.authUser} />
+					<Card key={transaction._id} transaction={transaction} authUser={authUser?.authUser} />
 				))}
 			</div>
 			{!loading && data?.transactions.length === 0 && (
