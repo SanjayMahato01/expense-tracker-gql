@@ -13,6 +13,7 @@ import session from 'express-session';
 import connectMongo from 'connect-mongodb-session';
 import { buildContext } from 'graphql-passport';
 import { configurePassport } from './passport/passport.config.js';
+import path from 'path';
 
 dotenv.config();
 configurePassport();
@@ -26,6 +27,9 @@ const store = new mongoDBStore({
   uri : process.env.MONGO_URI,
   collection : 'sessions'
 });
+
+const __dirname = path.resolve() 
+
 store.on('error',(error) => console.log(error));
 
 app.use(
@@ -47,7 +51,7 @@ app.use(passport.session());
 const server = new ApolloServer({
     typeDefs : mergedTypeDefs ,
     resolvers : mergedResolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer }),ApolloServerPluginLandingPageDisabled()],
   });
   
 
@@ -64,6 +68,12 @@ const server = new ApolloServer({
       context: async ({ req,res }) => buildContext({req,res}),
     }),
   );
+
+  app.use(express.static(path.join(__dirname,"frontend/dist")))
+
+  app.get(/(.*)/,(req,res) => {
+         res.sendFile(path.join(__dirname,"frontend/dist","index.html"))
+  })
   
   // Modified server startup
   await new Promise((resolve) =>
